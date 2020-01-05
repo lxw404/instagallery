@@ -1,0 +1,22 @@
+{
+    "name": "instagallery",
+    "description": "",
+    "version": "0.1.0",
+    "main": "server.js",
+    "author": "lxw404",
+    "license": "BSD-3-Clause-Attribution",
+    "dependencies": {
+        "express": "latest",
+        "readline": "latest",
+        "jquery": "^3.4.1"
+    },
+    "devDependencies": {
+        "tinyify": "^2.5.1"
+    },
+    "scripts": {
+        "build": "browserify --s zch public/instagallery.js -p tinyify -o public/dist/instagallery.min.js",
+        "build-debug": "browserify --s zch public/instagallery.js -o public/dist/instagallery.min.js",
+        "debug": "npm run build-debug && node server.js",
+        "start": "npm run build && node server.js"
+    }
+}
