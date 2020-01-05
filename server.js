@@ -22,6 +22,10 @@ app.get('/instagallery.css', function (req, res) {
     res.sendFile( __dirname + "/" + "instagallery.css" );
 });
 
+app.get('/jquery-gridder.min.css', function(req,res){
+    res.sendFile( __dirname + "/" + "jquery-gridder.min.css" );
+});
+
 app.get('/instagallery.js', function (req, res) {
     res.sendFile( __dirname + "/" + "instagallery.js" );
 });
@@ -41,7 +45,13 @@ app.get('/rq', function(req, res){
     // Send data
     console.log("Got a request.");
     console.log(req.url);
-    res.jsonp({"link": linkURL});
+    res.jsonp({"link": linkURL});  // Send JSON wrapped with callback
+});
+
+app.get('/gq', function(req, res){
+    // Show link
+    console.log("Got a link: " + req.url);
+    res.jsonp({});
 });
 
 // Listen on port
