@@ -8,6 +8,10 @@ module.exports = {
 $ = require("jquery");
 require("./jquery.gridder.min.js");
 
+// Constants
+const MAX_RETRY = 5;      // Maximum number of retries
+const RETRY_DELAY = 5000; // Retry delay (ms)
+
 // Globals
 var rawList = []; // Current raw list of gallery elements
 var jn = 0;       // Current request number
@@ -102,6 +106,30 @@ function showGallery(data){
     });
 }
 
+// Request link (with retry)
+function reqLink(linkName, i){
+    $.ajax({
+        url: 'https://api.codetabs.com/v1/proxy?quest=' + linkName,
+        method: 'GET',
+    }).done(function(res){
+        // Store and render data
+        rawList = res.match(/[^\r\n]+/g);
+        showGallery(rawList);
+    }).fail(function(res){
+        // Handle failure to load resource
+        if ((i+1) > MAX_RETRY){
+            // Error
+            console.error("Resource unavailable.");
+        }
+        else {
+            // Retry
+            setTimeout(function(){
+                reqLink(linkName, i+1);
+            }, RETRY_DELAY);
+        }
+    });
+}
+
 // On document load, add content
 $(document).ready(function(){
     // Request URL
@@ -117,17 +145,7 @@ $(document).ready(function(){
             console.log(JSON.stringify(data));
             
             // Request link data (using CORS proxy)
-            $.ajax({
-                url: 'https://api.codetabs.com/v1/proxy?quest=' + data['link'],
-                method: 'GET',
-            }).done(function(res){
-                // Store and render data
-                rawList = res.match(/[^\r\n]+/g);
-                showGallery(rawList);
-            }).fail(function(res){
-                // TODO: Handle failure to load resource
-                
-            });
+            reqLink(data['link'], 0);
         }
     });
 });
