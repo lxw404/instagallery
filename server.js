@@ -72,7 +72,7 @@ var server = app.listen(8081, function () {
         rl.question('Input pastebin link> ', function (answer) {
             linkURL = answer;
             rl.question('Input optional title> ', function (answer) {
-                gTitle = answer;
+                gTitle = encodeURI(answer);
             });
         });
     };
