@@ -152,7 +152,7 @@ $(document).ready(function(){
             
             // Set optional title
             if (data.hasOwnProperty('title')){
-                gTitle = decodeURI(data['title']);
+                gTitle = decodeURIComponent(data['title']);
             }
             
             // Request link data (using CORS proxy)
