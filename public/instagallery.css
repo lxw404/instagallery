@@ -11,6 +11,10 @@ body {
     }
 }
 
+.title {
+    margin-bottom: 40px;
+}
+
 .container.container-big {
     width: 80%
 }

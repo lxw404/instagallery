@@ -4,6 +4,7 @@ var app = express();
 
 // Local variables
 var linkURL = '';
+var gTitle = '';
 
 app.all('*', function(req, res, next) {
    res.header("Access-Control-Allow-Origin", "*");
@@ -45,7 +46,11 @@ app.get('/rq', function(req, res){
     // Send data
     console.log("Got a request.");
     console.log(req.url);
-    res.jsonp({"link": linkURL});  // Send JSON wrapped with callback
+    var obj = {"link": linkURL};
+    if (gTitle != ''){
+        obj['title'] = gTitle;
+    }
+    res.jsonp(obj);  // Send JSON wrapped with callback
 });
 
 app.get('/gq', function(req, res){
@@ -66,6 +71,9 @@ var server = app.listen(8081, function () {
     var rec = function(){
         rl.question('Input pastebin link> ', function (answer) {
             linkURL = answer;
+            rl.question('Input optional title> ', function (answer) {
+                gTitle = answer;
+            });
         });
     };
     rec();

@@ -15,6 +15,7 @@ const RETRY_DELAY = 5000; // Retry delay (ms)
 // Globals
 var rawList = []; // Current raw list of gallery elements
 var jn = 0;       // Current request number
+var gTitle = "";  // Gallery title
 
 // Hyperlink click
 function hlc(e){
@@ -45,6 +46,11 @@ function conT(e, ind, end){
 function showGallery(data){
     // Empty the contents
     $("#con").empty();
+    
+    // Create optional title
+    if (gTitle != ""){
+        $("#con").append('<h1 class="title">' + gTitle + '</h1>');
+    }
     
     // Create navigation
     $("#con").append('<ul class="gridder" id="gallery"></ul>');
@@ -143,6 +149,11 @@ $(document).ready(function(){
             //LOG
             console.log('success');
             console.log(JSON.stringify(data));
+            
+            // Set optional title
+            if (data.hasOwnProperty('title')){
+                gTitle = data['title'];
+            }
             
             // Request link data (using CORS proxy)
             reqLink(data['link'], 0);
